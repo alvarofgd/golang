@@ -1,12 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Number interface {
 	int64 | float64
 }
-
-type Any interface {}
 
 func main() {
 
@@ -43,9 +43,12 @@ func main() {
 		return len(s)%2 == 0
 	})
 	fmt.Println(f)
+	fmt.Println(arr)
 }
 
-func filtering[T Any](ts []T, f func(t T) bool) []T {
+type Predicate[T any] func(t T) bool
+
+func filtering[T any](ts []T, f Predicate[T]) []T {
 
 	return folding(ts, []T{}, func(ts []T, t T) []T {
 
@@ -57,7 +60,9 @@ func filtering[T Any](ts []T, f func(t T) bool) []T {
 	})
 }
 
-func mapping[T Any, R Any](ts []T, f func(t T) R) []R {
+type Mapper[T any, R any] func(t T) R
+
+func mapping[T any, R any](ts []T, f Mapper[T, R]) []R {
 
 	return folding(ts, []R{}, func(rs []R, t T) []R {
 
@@ -65,7 +70,9 @@ func mapping[T Any, R Any](ts []T, f func(t T) R) []R {
 	})
 }
 
-func folding[T Any, R Any](ts []T, acc R, f func(r R, t T) R) R {
+type Accumulator[T any, R any] func(r R, t T) R
+
+func folding[T any, R any](ts []T, acc R, f Accumulator[T, R]) R {
 
 	res := acc
 	for _, v := range ts {
