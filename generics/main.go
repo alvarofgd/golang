@@ -65,9 +65,9 @@ func mapping[T Any, R Any](ts []T, f func(t T) R) []R {
 	})
 }
 
-func folding[T Any, R Any](ts []T, i R, f func(r R, t T) R) R {
+func folding[T Any, R Any](ts []T, acc R, f func(r R, t T) R) R {
 
-	res := i
+	res := acc
 	for _, v := range ts {
 		res = f(res, v)
 	}
