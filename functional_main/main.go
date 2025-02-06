@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"golang/functional"
+	"slices"
 )
 
 type Number interface {
@@ -48,7 +49,7 @@ func main() {
 	})
 	fmt.Println("arr.groupBy(string -> (len(string), []string)): ", m2)
 
-	f := functional.Filter(arr, func(s string) bool {
+	f := functional.FilterSeq(slices.Values(arr), func(s string) bool {
 		return len(s)%2 == 0
 	})
 	fmt.Println("arr.even()", f)
